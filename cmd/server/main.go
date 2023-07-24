@@ -5,12 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/bradford-hamilton/stats-api/internal/server"
 )
 
 func main() {
-	s := server.New()
+	c := http.Client{Timeout: 30 * time.Second}
+	s := server.New(&c)
 	port := os.Getenv("STATS_API_PORT")
 	if port == "" {
 		port = "4000"

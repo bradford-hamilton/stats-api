@@ -1,6 +1,7 @@
 package server
 
 import (
+	"net/http"
 	"os"
 	"time"
 
@@ -12,14 +13,19 @@ import (
 // API is a structure that holds dependencies and provides
 // methods for orchestrating http server interactions.
 type API struct {
-	baseURL string
-	Mux     *chi.Mux
+	baseURL    string
+	Mux        *chi.Mux
+	httpClient HTTPClient
+}
+
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
 }
 
 // New creates a router, sets up middleware, and initalizes routes and handlers.
-func New() *API {
-	r := chi.NewRouter()
-	r.Use(
+func New(client HTTPClient) *API {
+	router := chi.NewRouter()
+	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
 		middleware.StripSlashes,            // strip slashes to no slash URL versions
@@ -32,7 +38,12 @@ func New() *API {
 		baseURL = "todo_production_endpoint"
 	}
 
-	api := &API{baseURL: baseURL, Mux: r}
+	api := &API{
+		baseURL:    baseURL,
+		Mux:        router,
+		httpClient: client,
+	}
+
 	api.initializeRoutes()
 
 	return api
@@ -40,4 +51,11 @@ func New() *API {
 
 func (a *API) initializeRoutes() {
 	a.Mux.Get("/ping", a.ping)
+	a.Mux.Route("/api", func(r chi.Router) {
+		r.Route("/v1", func(r chi.Router) {
+			r.Route("/schedule", func(r chi.Router) {
+				r.Get("/", a.getSchedule)
+			})
+		})
+	})
 }
