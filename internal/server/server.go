@@ -2,7 +2,6 @@ package server
 
 import (
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -14,7 +13,6 @@ import (
 // API is a structure that holds dependencies and provides
 // methods for orchestrating http server interactions.
 type API struct {
-	baseURL    string
 	Mux        *chi.Mux
 	httpClient HTTPClient
 	log        *zap.Logger
@@ -39,13 +37,7 @@ func New(client HTTPClient, logger *zap.Logger) *API {
 		middleware.Timeout(30*time.Second), // start with a pretty standard timeout
 	)
 
-	baseURL := "http://localhost:4000"
-	if os.Getenv("STATS_API_ENVIRONMENT") == "production" {
-		baseURL = "todo_production_endpoint"
-	}
-
 	api := &API{
-		baseURL:    baseURL,
 		Mux:        router,
 		httpClient: client,
 		log:        logger,

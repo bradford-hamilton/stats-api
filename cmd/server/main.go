@@ -14,7 +14,14 @@ import (
 )
 
 func main() {
-	logger, err := zap.NewProduction()
+	var logger *zap.Logger
+	var err error
+
+	if os.Getenv("STATS_API_ENVIRONMENT") == "production" {
+		logger, err = zap.NewProduction()
+	} else {
+		logger, err = zap.NewDevelopment()
+	}
 	if err != nil {
 		log.Fatal("failed to create logger")
 	}
@@ -33,9 +40,8 @@ func main() {
 		Handler: s.Mux,
 	}
 
-	// Implement a graceful shutdown for the server. This allows in-flight requests
-	// to complete before shutting down the server, preventing potential data loss
-	// or corruption. It also provides a space for properly freeing resources.
+	// Implement a graceful shutdown. This allows in-flight requests to complete before
+	// shutting down the server, preventing potential data loss or corruption.
 	serverCtx, serverStopCtx := context.WithCancel(context.Background())
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
@@ -55,9 +61,6 @@ func main() {
 		if err := srv.Shutdown(shutdownCtx); err != nil {
 			log.Fatal(err)
 		}
-
-		// In a larger production app, here I would free resources
-		// properly like database connections or file handles
 
 		serverStopCtx()
 	}()
