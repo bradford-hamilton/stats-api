@@ -2,8 +2,10 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
+	"sort"
 	"strconv"
 	"time"
 
@@ -24,7 +26,8 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid date format, expected YYYY-MM-DD", http.StatusBadRequest)
 		return
 	}
-	if _, err := strconv.Atoi(teamID); err != nil {
+	teamIDInt, err := strconv.Atoi(teamID)
+	if err != nil {
 		http.Error(w, "Invalid teamID format, expected a number", http.StatusBadRequest)
 		return
 	}
@@ -48,12 +51,17 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// Torn between 500 and 502. It isn't exactly a proxy, as we do some
 		// additional logic/processing, but 502 seems to fit best here.
-		http.Error(w, "We're unable to complete your request at this time.", http.StatusBadGateway)
+		http.Error(w, "We're unable to complete your request at this time", http.StatusBadGateway)
 		return
 	}
 	defer res.Body.Close()
 
-	// if res.StatusCode != http.StatusOK {}
+	// Without docs or requirements around other responses,
+	// I'm just going to make sure we got a 200
+	if res.StatusCode != http.StatusOK {
+		fmt.Println("TODO, res.StatusCode != http.StatusOK")
+		return
+	}
 
 	var s StatScheduleResponse
 	if err := json.NewDecoder(res.Body).Decode(&s); err != nil {
@@ -62,6 +70,23 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Filter results based on requirements using teamID
+	if len(s.Dates) == 0 {
+		// Something went wrong/hard to define without MLB API docs
+		fmt.Println("TODO, len(s.Dates) == 0")
+		return
+	}
+
+	games := s.Dates[0].Games
+	if len(games) == 0 {
+		// Something went wrong/hard to define without MLB API docs
+		fmt.Println("TODO, len(games) == 0")
+		return
+	}
+
+	// Sort by name, preserving original order
+	sort.SliceStable(games, func(i, _ int) bool {
+		return games[i].Teams.Away.Team.ID == teamIDInt || games[i].Teams.Home.Team.ID == teamIDInt
+	})
 
 	render.JSON(w, r, s)
 }
