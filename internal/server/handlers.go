@@ -20,7 +20,6 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	date := r.URL.Query().Get("date")
 	teamID := r.URL.Query().Get("teamID")
 
-	// Validate query params
 	layout := "2006-01-02"
 	if _, err := time.Parse(layout, date); err != nil {
 		http.Error(w, "Invalid date format, expected YYYY-MM-DD", http.StatusBadRequest)
@@ -32,11 +31,11 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Build http request
 	params := url.Values{}
 	params.Add("date", date)
 	params.Add("sportId", "1")
 	params.Add("language", "en")
+
 	mlbStatsURL := mlbStatsBaseURL + "/api/v1/schedule?" + params.Encode()
 
 	req, err := http.NewRequest(http.MethodGet, mlbStatsURL, nil)
@@ -46,18 +45,13 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	}
 	req.Header.Set("Accept", "application/json")
 
-	// Make call to mlb stats API
 	res, err := a.httpClient.Do(req)
 	if err != nil {
-		// Torn between 500 and 502. It isn't exactly a proxy, as we do some
-		// additional logic/processing, but 502 seems to fit best here.
 		http.Error(w, "We're unable to complete your request at this time", http.StatusBadGateway)
 		return
 	}
 	defer res.Body.Close()
 
-	// Without docs or requirements around other responses,
-	// I'm just going to make sure we got a 200
 	if res.StatusCode != http.StatusOK {
 		fmt.Println("TODO, res.StatusCode != http.StatusOK")
 		return
@@ -69,52 +63,64 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Filter results based on requirements using teamID.
+	// No dates found for given date
 	if len(s.Dates) == 0 {
-		// Something went wrong/hard to define without MLB API docs.
-		fmt.Println("TODO, len(s.Dates) == 0")
-		fmt.Println("TODO No games this day?")
+		render.JSON(w, r, s)
 		return
 	}
 
-	games := s.Dates[0].Games
-	if len(games) == 0 {
-		// Something went wrong/hard to define without MLB API docs.
-		fmt.Println("TODO, len(games) == 0")
+	// No games found for given date
+	if len(s.Dates[0].Games) == 0 {
+		render.JSON(w, r, s)
 		return
 	}
 
-	// Sort by favorite team's ID in home or away games, preserving original order.
+	s.Dates[0].Games = sortGames(s.Dates[0].Games, teamIDInt)
+
+	render.JSON(w, r, s)
+}
+
+func sortGames(games []Game, teamID int) []Game {
+	// Sort by favorite team's ID in home or away games, preserving original order otherwise.
 	less := func(i, _ int) bool {
-		return games[i].Teams.Away.Team.ID == teamIDInt ||
-			games[i].Teams.Home.Team.ID == teamIDInt
+		return games[i].Teams.Away.Team.ID == teamID ||
+			games[i].Teams.Home.Team.ID == teamID
 	}
 	sort.SliceStable(games, less)
 
-	// // If we matched the favorite teamID and that team has a double header
-	favTeamDoubleHeader := (games[0].Teams.Away.Team.ID == teamIDInt ||
-		games[0].Teams.Home.Team.ID == teamIDInt) &&
+	// If we matched the favorite teamID and that team has a double header.
+	favTeamDoubleHeader := (games[0].Teams.Away.Team.ID == teamID ||
+		games[0].Teams.Home.Team.ID == teamID) &&
 		games[0].DoubleHeader != "N"
 
-	if favTeamDoubleHeader {
-		if len(games) < 2 {
-			// Something odd happened, but don't crash TODO
-			fmt.Printf("len(games) == %d\n", len(games))
-		}
-
-		if games[0].DoubleHeader == "Y" && games[0].Status.StartTimeTBD {
-			// If "single admission"/"traditional" doubleheader type,
-			// sort games 1 and 2 chronologically using "startTimeTBD"
-			games[0], games[1] = games[1], games[0]
-		} else if games[0].DoubleHeader == "S" && (games[0].GameDate.After(games[1].GameDate)) {
-			// If "split admission" doubleheader type, sort games
-			// 1 and 2 chronologically using "gameDate"
-			games[0], games[1] = games[1], games[0]
-		}
-
-		// TODO After those sorts, while still under if favTeamDoubleHeader if the second game is "live", move that up to games[0]
-
+	if !favTeamDoubleHeader {
+		return games
+	}
+	if len(games) < 2 {
+		fmt.Println("This should never happen at this point")
+		return games
 	}
 
-	render.JSON(w, r, s)
+	if games[0].DoubleHeader == "Y" && games[0].Status.StartTimeTBD {
+		// If "single admission"/"traditional" doubleheader type,
+		// sort games 1 and 2 chronologically using "startTimeTBD"
+		games[0], games[1] = games[1], games[0]
+	} else if games[0].DoubleHeader == "S" && (games[0].GameDate.After(games[1].GameDate)) {
+		// If "split admission" doubleheader type, sort games
+		// 1 and 2 chronologically using "gameDate"
+		games[0], games[1] = games[1], games[0]
+	}
+
+	// From takehome docs: "Any date in the 2021 and 2022 calendar years may be used to evaluate your service"
+	// Afterwards it talks about if a game is live do x, y, z… Games can't ever be live if we only accept dates
+	// in the past. Had this not been a code challenge, I would have gotten clarification around this. I wanted
+	// to show possible logic for this, however I also wasnt 100% sure on the correct field to check against.
+	// I made an assumption and chose "status.detailedState". Had I gotten clarification and the result was
+	// that we indeed won't accept queries after 2022, then instead of this code I would have likely validated
+	// that the date given was in 2021-2022 range at the top of this handler.
+	if games[1].Status.DetailedState != "Final" {
+		games[0], games[1] = games[1], games[0]
+	}
+
+	return games
 }
