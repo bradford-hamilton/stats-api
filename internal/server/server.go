@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
+	"go.uber.org/zap"
 )
 
 // API is a structure that holds dependencies and provides
@@ -16,6 +17,7 @@ type API struct {
 	baseURL    string
 	Mux        *chi.Mux
 	httpClient HTTPClient
+	log        *zap.Logger
 }
 
 // HTTPClient is the interface that must be implemented by an API's httpClient.
@@ -26,7 +28,7 @@ type HTTPClient interface {
 const mlbStatsBaseURL = "https://statsapi.mlb.com"
 
 // New creates a router, sets up middleware, and initalizes routes and handlers.
-func New(client HTTPClient) *API {
+func New(client HTTPClient, logger *zap.Logger) *API {
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
@@ -46,6 +48,7 @@ func New(client HTTPClient) *API {
 		baseURL:    baseURL,
 		Mux:        router,
 		httpClient: client,
+		log:        logger,
 	}
 
 	api.initializeRoutes()
