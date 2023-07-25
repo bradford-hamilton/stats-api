@@ -18,9 +18,12 @@ type API struct {
 	httpClient HTTPClient
 }
 
+// HTTPClient ...TODO
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
+
+const mlbStatsBaseURL = "https://statsapi.mlb.com"
 
 // New creates a router, sets up middleware, and initalizes routes and handlers.
 func New(client HTTPClient) *API {
@@ -28,6 +31,7 @@ func New(client HTTPClient) *API {
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
+		middleware.RequestID,
 		middleware.StripSlashes,            // strip slashes to no slash URL versions
 		middleware.Recoverer,               // recover from panics without crashing server
 		middleware.Timeout(30*time.Second), // start with a pretty standard timeout
