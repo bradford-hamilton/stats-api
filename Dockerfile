@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:1.20
 
 # Copy src code into image, fetch dependencies
 WORKDIR $GOPATH/src/bradford-hamilton/stats-api
