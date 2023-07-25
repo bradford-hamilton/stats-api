@@ -18,7 +18,7 @@ type API struct {
 	httpClient HTTPClient
 }
 
-// HTTPClient ...TODO
+// HTTPClient is the interface that must be implemented by an API's httpClient.
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }

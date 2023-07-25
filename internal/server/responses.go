@@ -21,6 +21,7 @@ type StatScheduleResponse struct {
 	} `json:"dates"`
 }
 
+// Game represents a single game from within a StatScheduleResponse
 type Game struct {
 	GamePk       int       `json:"gamePk"`
 	Link         string    `json:"link"`
