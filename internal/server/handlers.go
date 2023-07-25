@@ -36,7 +36,6 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	params.Add("date", date)
 	params.Add("sportId", "1")
 	params.Add("language", "en")
-
 	mlbStatsURL := mlbStatsBaseURL + "/api/v1/schedule?" + params.Encode()
 
 	req, err := http.NewRequest(http.MethodGet, mlbStatsURL, nil)
@@ -71,14 +70,7 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// No dates found for given date
-	if len(s.Dates) == 0 {
-		render.JSON(w, r, s)
-		return
-	}
-
-	// No games found for given date
-	if len(s.Dates[0].Games) == 0 {
+	if len(s.Dates) == 0 || len(s.Dates[0].Games) == 0 {
 		render.JSON(w, r, s)
 		return
 	}
@@ -104,7 +96,7 @@ func sortGames(games []Game, teamID int) []Game {
 		return games
 	}
 	if len(games) < 2 {
-		fmt.Println("TODO: This should never happen at this point")
+		fmt.Println("TODO: This should never happen at this point as far as I can tell")
 		return games
 	}
 
