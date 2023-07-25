@@ -25,7 +25,7 @@ type HTTPClient interface {
 
 const mlbStatsBaseURL = "https://statsapi.mlb.com"
 
-// New creates a router, sets up middleware, and initalizes routes and handlers.
+// New creates a router, sets up middleware, and initializes routes and handlers.
 func New(client HTTPClient, logger *zap.Logger) *API {
 	router := chi.NewRouter()
 	router.Use(
