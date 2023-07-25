@@ -97,8 +97,7 @@ func sortGames(games []Game, teamID int) []Game {
 	sort.SliceStable(games, less)
 
 	// If we matched the favorite teamID and that team has a double header.
-	favTeamDoubleHeader := (games[0].Teams.Away.Team.ID == teamID ||
-		games[0].Teams.Home.Team.ID == teamID) &&
+	favTeamDoubleHeader := (games[0].Teams.Away.Team.ID == teamID || games[0].Teams.Home.Team.ID == teamID) &&
 		games[0].DoubleHeader != "N"
 
 	if !favTeamDoubleHeader {
@@ -109,13 +108,12 @@ func sortGames(games []Game, teamID int) []Game {
 		return games
 	}
 
-	if games[0].DoubleHeader == "Y" && games[0].Status.StartTimeTBD {
-		// If "single admission"/"traditional" doubleheader type,
-		// sort games 1 and 2 chronologically using "startTimeTBD"
-		games[0], games[1] = games[1], games[0]
-	} else if games[0].DoubleHeader == "S" && (games[0].GameDate.After(games[1].GameDate)) {
-		// If "split admission" doubleheader type, sort games
-		// 1 and 2 chronologically using "gameDate"
+	// If "single admission"/"traditional" doubleheader type and first game in slice is later by `startTimeTBD == true`
+	game1LaterStartTime := games[0].DoubleHeader == "Y" && games[0].Status.StartTimeTBD
+	// If "split admission" doubleheader type and the 1st game's `gameDate` is later than the 2nd games `gameDate`
+	game1LaterGameDate := games[0].DoubleHeader == "S" && games[0].GameDate.After(games[1].GameDate)
+
+	if game1LaterStartTime || game1LaterGameDate {
 		games[0], games[1] = games[1], games[0]
 	}
 
