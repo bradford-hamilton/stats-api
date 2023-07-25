@@ -20,3 +20,29 @@
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
 </p>
+
+### Run Application
+```
+go run cmd/server/main.go
+```
+
+### Build and Push Dockerfile
+```
+docker build -t bradfordhamilton/stats-api .
+docker push bradfordhamilton/stats-api
+```
+
+### Usage
+Currently the only supported API call is a GET to `/api/v1/schedule` which accepts two query params `date` and `teamID` where date is in `YYYY-MM-DD` format and teamID is a `number`/`int`.
+
+#### Examples:
+
+Local:
+```
+http://127.0.0.1:4000/api/v1/schedule?date=2022-07-21&teamID=147
+```
+
+Live Application:
+```
+http://134.209.123.132:4000/api/v1/schedule?date=2022-07-21&teamID=147
+```
