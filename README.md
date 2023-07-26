@@ -45,10 +45,9 @@ Currently the only supported API call is a GET to `/api/v1/schedule` which accep
 ```
 http://127.0.0.1:4000/api/v1/schedule?date=2022-07-21&teamID=147
 ```
-
-### Live Application Endpoint:
+#### Live Example:
 ```
-http://134.209.123.132:4000
+http://134.209.123.132:4000/api/v1/schedule?date=2022-07-21&teamID=147
 ```
 
 ### Take Home Notes
