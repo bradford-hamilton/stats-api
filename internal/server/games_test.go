@@ -65,7 +65,7 @@ func Test_sortGames(t *testing.T) {
 
 var fixture1 = []Game{{
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -73,7 +73,7 @@ var fixture1 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
@@ -81,7 +81,7 @@ var fixture1 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -91,7 +91,7 @@ var fixture1 = []Game{{
 
 var fixture1SortedByPhilliesID = []Game{{
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -99,7 +99,7 @@ var fixture1SortedByPhilliesID = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -107,7 +107,7 @@ var fixture1SortedByPhilliesID = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
@@ -117,7 +117,7 @@ var fixture1SortedByPhilliesID = []Game{{
 
 var fixture2 = []Game{{
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -125,7 +125,7 @@ var fixture2 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: true},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: true},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -133,7 +133,7 @@ var fixture2 = []Game{{
 	DoubleHeader: "Y",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
@@ -141,7 +141,7 @@ var fixture2 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -151,7 +151,7 @@ var fixture2 = []Game{{
 
 var fixture2SortedByPhilliesID = []Game{{
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -159,7 +159,7 @@ var fixture2SortedByPhilliesID = []Game{{
 	DoubleHeader: "Y",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: true},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: true},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -167,7 +167,7 @@ var fixture2SortedByPhilliesID = []Game{{
 	DoubleHeader: "Y",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -175,7 +175,7 @@ var fixture2SortedByPhilliesID = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
@@ -188,7 +188,7 @@ var fixture3gameDateLater = time.Now().Add(2 * time.Hour)
 
 var fixture3 = []Game{{
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -196,7 +196,7 @@ var fixture3 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: fixture3gameDateLater,
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -204,7 +204,7 @@ var fixture3 = []Game{{
 	DoubleHeader: "S",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
@@ -212,7 +212,7 @@ var fixture3 = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: fixture3gameDateEarlier,
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -222,7 +222,7 @@ var fixture3 = []Game{{
 
 var fixture3SortedByPhilliesID = []Game{{
 	GameDate: fixture3gameDateEarlier,
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -230,7 +230,7 @@ var fixture3SortedByPhilliesID = []Game{{
 	DoubleHeader: "S",
 }, {
 	GameDate: fixture3gameDateLater,
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 143, Name: "Philadelphia Phillies"}},
 		Home: Team{Team: TeamMetadata{ID: 146, Name: "Miami Marlins"}},
@@ -238,7 +238,7 @@ var fixture3SortedByPhilliesID = []Game{{
 	DoubleHeader: "S",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 115, Name: "Colorado Rockies"}},
 		Home: Team{Team: TeamMetadata{ID: 134, Name: "Pittsburgh Pirates"}},
@@ -246,7 +246,7 @@ var fixture3SortedByPhilliesID = []Game{{
 	DoubleHeader: "N",
 }, {
 	GameDate: time.Time{},
-	Status:   Status{DetailedState: "Final", StartTimeTBD: false},
+	Status:   Status{AbstractGameState: "Final", StartTimeTBD: false},
 	Teams: Teams{
 		Away: Team{Team: TeamMetadata{ID: 144, Name: "Atlanta Braves"}},
 		Home: Team{Team: TeamMetadata{ID: 147, Name: "New York Yankees"}},
