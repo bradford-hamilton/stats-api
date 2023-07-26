@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -21,7 +20,6 @@ func sortGames(games []Game, teamID int) []Game {
 		return games
 	}
 	if len(games) < 2 {
-		fmt.Println("TODO: This should never happen at this point as far as I can tell")
 		return games
 	}
 
