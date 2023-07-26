@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (a *API) ping(w http.ResponseWriter, r *http.Request) { w.Write([]byte("pong")) }
+func (a API) ping(w http.ResponseWriter, r *http.Request) { w.Write([]byte("pong")) }
 
 func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 	date := r.URL.Query().Get("date")
