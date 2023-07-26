@@ -23,13 +23,19 @@
 
 ### Run Application
 ```
+go mod download
 go run cmd/server/main.go
+```
+
+### Run Tests
+```
+go test ./...
 ```
 
 ### Build and Push Dockerfile
 ```
-docker build -t bradfordhamilton/stats-api .
-docker push bradfordhamilton/stats-api
+docker build -t {dockerhub_user}/stats-api .
+docker push {dockerhub_user}/stats-api
 ```
 
 ### Usage

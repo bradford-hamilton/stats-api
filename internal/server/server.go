@@ -19,6 +19,7 @@ type API struct {
 }
 
 // HTTPClient is the interface that must be implemented by an API's httpClient.
+// This will allow us to mock outgoing calls during tests.
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }

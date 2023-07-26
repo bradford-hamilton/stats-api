@@ -29,16 +29,7 @@ func main() {
 
 	client := http.Client{Timeout: 30 * time.Second}
 	s := server.New(&client, logger)
-
-	port := os.Getenv("STATS_API_PORT")
-	if port == "" {
-		port = "4000"
-	}
-
-	srv := &http.Server{
-		Addr:    "0.0.0.0:" + port,
-		Handler: s.Mux,
-	}
+	srv := &http.Server{Addr: ":4000", Handler: s.Mux}
 
 	// Implement a graceful shutdown. This allows in-flight requests to complete before
 	// shutting down the server, preventing potential data loss or corruption.
@@ -54,20 +45,22 @@ func main() {
 		go func() {
 			<-shutdownCtx.Done()
 			if shutdownCtx.Err() == context.DeadlineExceeded {
-				log.Fatal("graceful shutdown timed out, forcing exit")
+				logger.Fatal("graceful shutdown timed out, forcing exit")
 			}
 		}()
 
 		if err := srv.Shutdown(shutdownCtx); err != nil {
-			log.Fatal(err)
+			logger.Fatal(err.Error())
 		}
 
 		serverStopCtx()
 	}()
 
+	logger.Info("Server listening on port 4000")
+
 	err = srv.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
-		log.Fatal(err)
+		logger.Fatal(err.Error())
 	}
 
 	<-serverCtx.Done()
