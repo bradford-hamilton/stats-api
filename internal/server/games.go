@@ -33,12 +33,12 @@ func sortGames(games []Game, teamID int) []Game {
 	}
 
 	// From takehome docs: "Any date in the 2021 and 2022 calendar years may be used to evaluate your service"
-	// Afterwards it talks about if a game is live do x, y, z… Games can't ever be live if we only accept dates
-	// in the past. Had this not been a code challenge, I would have gotten clarification around this. I wanted
-	// to show possible logic for this, however I also wasnt 100% sure on the correct field to check against.
-	// I made an assumption and chose "status.detailedState". Had I gotten clarification and the result was
-	// that we indeed won't accept queries after 2022, then instead of this code I would have likely validated
-	// that the date given was in 2021-2022 range at the top of this handler.
+	// Afterwards it talks about if a game is live do x, y, z… If I'm not mistaken, games can't ever be live if
+	// we only accept dates in the past. Had this not been a code challenge, I would have gotten clarification
+	// around this. I wanted to show possible logic for this, however I also wasnt 100% sure on the correct
+	// field to check against. I made an assumption and chose "status.detailedState". Had I gotten clarification
+	// and the result was that we indeed won't accept queries after 2022, then instead of this code I would have
+	// validated that the date given was in 2021-2022 range in the http handler.
 	if games[1].Status.DetailedState != "Final" {
 		games[0], games[1] = games[1], games[0]
 	}
