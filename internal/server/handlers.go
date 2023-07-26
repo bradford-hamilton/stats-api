@@ -23,11 +23,16 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid date format, expected YYYY-MM-DD", http.StatusBadRequest)
 		return
 	}
-	teamIDInt, err := strconv.Atoi(teamID)
-	if err != nil {
-		a.log.Warn(err.Error(), zap.String("teamID", teamID))
-		http.Error(w, "Invalid teamID format, expected a number", http.StatusBadRequest)
-		return
+
+	var teamIDInt int
+	var err error
+	if teamID != "" {
+		teamIDInt, err = strconv.Atoi(teamID)
+		if err != nil {
+			a.log.Warn(err.Error(), zap.String("teamID", teamID))
+			http.Error(w, "Invalid teamID format, expected a number", http.StatusBadRequest)
+			return
+		}
 	}
 
 	params := url.Values{}
@@ -68,7 +73,7 @@ func (a *API) getSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(s.Dates) == 0 || len(s.Dates[0].Games) == 0 {
+	if len(s.Dates) == 0 || len(s.Dates[0].Games) == 0 || teamIDInt == 0 {
 		render.JSON(w, r, s)
 		return
 	}

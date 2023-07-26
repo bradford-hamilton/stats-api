@@ -39,7 +39,7 @@ docker push {dockerhub_user}/stats-api:latest
 ```
 
 ### Usage
-Currently the only supported API call is a GET to `/api/v1/schedule` which accepts two query params `date` and `teamID` where date is in `YYYY-MM-DD` format and teamID is a `number`/`int`.
+Currently the only supported API call is a GET to `/api/v1/schedule` which accepts two query params `date` (required) and `teamID` (optional) where date is in `YYYY-MM-DD` format and teamID is a `number`/`int`.
 
 #### Local Example:
 ```

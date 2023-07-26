@@ -10,13 +10,14 @@ Take home challenge notes:
   - Made the assumption we would validate the inputs (date & teamID) at this layer. For one, the teamID query param
     is custom to this project/server so that needed to be validated and I decided to validate the date passed through
     as well.
+  - I made the choice to render all of a date's games in original order when a date is passed but no teamID. 
 
 2. I would likely add more tests, probably at the http handler layer as well as a couple more sorting scenarios.
 
 3. The "responses.go" file isn't a normal pattern I use, but I felt it made the most sense here without any more
    requirements/context and no real data or data modeling type layers.
 
-4. The endpoint (/api/v1/schedule) errors without query params. I would consider something like a default return of today's
-   games when no date is passed (if of course dates past 2022 were valid/allowed).
+4. The endpoint (/api/v1/schedule) errors without the date query param. I would consider something like a default
+   return of today's games when no date is passed (if of course dates past 2022 were valid/allowed).
 
 Thanks!

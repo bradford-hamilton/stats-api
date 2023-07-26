@@ -10,6 +10,8 @@ import (
 	"go.uber.org/zap"
 )
 
+const mlbStatsBaseURL = "https://statsapi.mlb.com"
+
 // API is a structure that holds dependencies and provides
 // methods for orchestrating http server interactions.
 type API struct {
@@ -23,8 +25,6 @@ type API struct {
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
-
-const mlbStatsBaseURL = "https://statsapi.mlb.com"
 
 // New creates a router, sets up middleware, and initializes routes and handlers.
 func New(client HTTPClient, logger *zap.Logger) *API {
