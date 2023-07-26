@@ -1,0 +1,18 @@
+Take home challenge notes:
+
+1. I made some assumptions around areas I would have normally clarified.
+  - See large comment above the final portion of sortGames in regards to live games.
+  - I chose what I thought were sensible log messages/priorities and return status codes, however these would likely
+    need some updates to fit exact requirements.
+  - I coded pretty defensively without MLB API docs or more context around the shape/contract of the JSON.
+    It's likely certain checks and bounds checks may not be necesssary if I had certain guaruntees from MLB API.
+  - Made the assumption we would validate the inputs (date & teamID) at this layer. For one, the teamID query param
+    is custom to this project/server so that needed to be validated and I decided to validate the date passed through
+    as well.
+
+2. I would likely add more tests, probably at the http handler layer as well as a couple more sorting scenarios.
+
+3. The "responses.go" file isn't a normal pattern I use or see, but I felt it made the most sense here without any more
+   requirements/context and no real data or data modeling type layers.
+
+Thanks!
