@@ -35,20 +35,18 @@ go test ./...
 ### Build and Push Dockerfile
 ```
 docker build -t {dockerhub_user}/stats-api .
-docker push {dockerhub_user}/stats-api
+docker push {dockerhub_user}/stats-api:latest
 ```
 
 ### Usage
 Currently the only supported API call is a GET to `/api/v1/schedule` which accepts two query params `date` and `teamID` where date is in `YYYY-MM-DD` format and teamID is a `number`/`int`.
 
-#### Examples:
-
-Local:
+#### Local Example:
 ```
 http://127.0.0.1:4000/api/v1/schedule?date=2022-07-21&teamID=147
 ```
 
-Live Application:
+### Live Application Endpoint:
 ```
-http://134.209.123.132:4000/api/v1/schedule?date=2022-07-21&teamID=147
+http://134.209.123.132:4000
 ```
